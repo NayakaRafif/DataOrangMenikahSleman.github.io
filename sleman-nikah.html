@@ -1,0 +1,1010 @@
+<title>Data Pernikahan Sleman</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap">
+
+<style>
+/* === TOKEN SYSTEM ===
+   Layout: header hero + filter row → KPI tiles → tiga chart row → tabel
+   Accent: biru Sleman (#2a78d6) dipasangkan dengan oranye (#eb6834)
+   Type: Plus Jakarta Sans (UI) + DM Serif Display (hero accent)
+*/
+:root {
+  --bg:         #f5f6f8;
+  --surface:    #ffffff;
+  --surface-2:  #f0f2f5;
+  --border:     #e2e5ea;
+  --ink-1:      #0f1117;
+  --ink-2:      #4a5162;
+  --ink-muted:  #8892a4;
+  --grid:       #e8eaed;
+  --accent:     #2a78d6;
+  --accent-2:   #eb6834;
+  --accent-3:   #1baf7a;
+  --accent-4:   #eda100;
+  --accent-bg:  #eaf2fd;
+  --chart-surf: #ffffff;
+  --hero-text:  #0d3a72;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #0d0e12;
+    --surface:    #161820;
+    --surface-2:  #1e2030;
+    --border:     #2a2d3a;
+    --ink-1:      #eef0f5;
+    --ink-2:      #9aa0b5;
+    --ink-muted:  #5c6278;
+    --grid:       #22253a;
+    --accent:     #3987e5;
+    --accent-2:   #d95926;
+    --accent-3:   #199e70;
+    --accent-4:   #c98500;
+    --accent-bg:  #13213d;
+    --chart-surf: #161820;
+    --hero-text:  #7ab4f5;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:         #0d0e12;
+  --surface:    #161820;
+  --surface-2:  #1e2030;
+  --border:     #2a2d3a;
+  --ink-1:      #eef0f5;
+  --ink-2:      #9aa0b5;
+  --ink-muted:  #5c6278;
+  --grid:       #22253a;
+  --accent:     #3987e5;
+  --accent-2:   #d95926;
+  --accent-3:   #199e70;
+  --accent-4:   #c98500;
+  --accent-bg:  #13213d;
+  --chart-surf: #161820;
+  --hero-text:  #7ab4f5;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink-1);
+  font-size: 14px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+  min-height: 100%;
+}
+
+/* === HEADER === */
+.header {
+  background: var(--accent);
+  margin-left: max(-16px, calc(-1 * env(safe-area-inset-left, 0px)));
+  margin-right: max(-16px, calc(-1 * env(safe-area-inset-right, 0px)));
+  padding: 28px max(24px, env(safe-area-inset-left, 0px)) 24px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: -40px -20px;
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(255,255,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-left { flex: 1; min-width: 0; }
+.header-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 6px;
+}
+.header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(22px, 4vw, 34px);
+  color: #fff;
+  font-weight: 400;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.header-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+.header-badge {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 8px;
+  padding: 10px 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.header-badge-label { font-size: 11px; color: rgba(255,255,255,0.65); }
+.header-badge-val {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: normal;
+  line-height: 1.1;
+}
+.header-badge-sub { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+/* === MAIN LAYOUT === */
+.page-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-block: 24px;
+}
+
+/* === FILTER ROW === */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.filter-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+.kec-select {
+  padding: 6px 28px 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-1);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238892a4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.kec-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* === KPI TILES === */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.kpi-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.kpi-tile:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+.kpi-tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+.kpi-tile.c1::before { background: var(--accent); }
+.kpi-tile.c2::before { background: var(--accent-2); }
+.kpi-tile.c3::before { background: var(--accent-3); }
+.kpi-tile.c4::before { background: var(--accent-4); }
+.kpi-label { font-size: 11px; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.kpi-val { font-size: 28px; font-weight: 700; color: var(--ink-1); line-height: 1.1; }
+.kpi-delta { font-size: 12px; color: var(--ink-2); margin-top: 2px; }
+.kpi-delta .up { color: #1baf7a; font-weight: 600; }
+.kpi-delta .dn { color: var(--accent-2); font-weight: 600; }
+.kpi-spark { margin-top: 8px; }
+
+/* === CHART GRID === */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.chart-grid-3 {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 700px) {
+  .chart-grid, .chart-grid-3 { grid-template-columns: 1fr; }
+}
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  overflow: hidden;
+}
+.chart-card.full { grid-column: 1 / -1; }
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-1);
+  margin-bottom: 2px;
+}
+.card-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-bottom: 14px;
+}
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+svg { display: block; width: 100%; overflow: visible; }
+
+/* === LEGEND === */
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-line {
+  width: 18px; height: 2px;
+  flex-shrink: 0;
+  border-radius: 1px;
+}
+
+/* === TOOLTIP === */
+.tooltip {
+  position: fixed;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--ink-1);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  min-width: 140px;
+  max-width: 220px;
+}
+.tooltip.visible { opacity: 1; }
+.tt-title { font-weight: 700; margin-bottom: 6px; color: var(--ink-1); }
+.tt-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 3px; }
+.tt-label { color: var(--ink-2); }
+.tt-val { font-weight: 600; color: var(--ink-1); font-variant-numeric: tabular-nums; }
+
+/* === TABLE VIEW === */
+.table-section { margin-top: 8px; }
+.table-toggle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.data-table { display: none; }
+.data-table.open { display: block; margin-top: 10px; overflow-x: auto; }
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.data-table th {
+  text-align: left;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.data-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--grid);
+  color: var(--ink-2);
+}
+.data-table td:first-child { color: var(--ink-1); font-weight: 500; }
+.data-table tr:last-child td { border-bottom: none; }
+
+/* === SEG BAR === */
+.seg-bar-wrap { margin-top: 4px; }
+.seg-bar {
+  display: flex;
+  height: 28px;
+  border-radius: 6px;
+  overflow: hidden;
+  gap: 2px;
+}
+.seg {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: filter 0.15s;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.seg:hover { filter: brightness(1.1); }
+.seg span { pointer-events: none; }
+</style>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-eyebrow">📊 Kabupaten Sleman · DIY · 2024</div>
+      <h1 class="header-title">Data Penduduk Menikah<br>di Kabupaten Sleman</h1>
+      <p class="header-sub">Rekap status pernikahan · 17 kecamatan · Tahun 2024</p>
+    </div>
+    <div class="header-badge">
+      <div class="header-badge-label">Total Penduduk Menikah</div>
+      <div class="header-badge-val" id="hero-val">594.320</div>
+      <div class="header-badge-sub">jiwa (laki-laki + perempuan)</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <span class="filter-label">Tahun</span>
+    <button class="filter-btn" onclick="setTahun(2022,this)">2022</button>
+    <button class="filter-btn" onclick="setTahun(2023,this)">2023</button>
+    <button class="filter-btn active" onclick="setTahun(2024,this)">2024</button>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Kecamatan</span>
+    <select class="kec-select" id="kec-filter" onchange="setKec(this.value)">
+      <option value="semua">Semua Kecamatan</option>
+      <option value="Depok">Depok</option>
+      <option value="Mlati">Mlati</option>
+      <option value="Gamping">Gamping</option>
+      <option value="Godean">Godean</option>
+      <option value="Ngaglik">Ngaglik</option>
+      <option value="Berbah">Berbah</option>
+      <option value="Kalasan">Kalasan</option>
+      <option value="Sleman">Sleman</option>
+      <option value="Prambanan">Prambanan</option>
+      <option value="Moyudan">Moyudan</option>
+      <option value="Seyegan">Seyegan</option>
+      <option value="Minggir">Minggir</option>
+      <option value="Tempel">Tempel</option>
+      <option value="Turi">Turi</option>
+      <option value="Pakem">Pakem</option>
+      <option value="Cangkringan">Cangkringan</option>
+      <option value="Ngemplak">Ngemplak</option>
+    </select>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi-tile c1">
+      <div class="kpi-label">Laki-laki Menikah</div>
+      <div class="kpi-val" id="kpi-lk">297.160</div>
+      <div class="kpi-delta"><span class="up">↑ 1,8%</span> vs tahun lalu</div>
+      <div class="kpi-spark"><canvas id="spk-lk" width="100" height="28"></canvas></div>
+    </div>
+    <div class="kpi-tile c2">
+      <div class="kpi-label">Perempuan Menikah</div>
+      <div class="kpi-val" id="kpi-pr">297.160</div>
+      <div class="kpi-delta"><span class="up">↑ 1,6%</span> vs tahun lalu</div>
+      <div class="kpi-spark"><canvas id="spk-pr" width="100" height="28"></canvas></div>
+    </div>
+    <div class="kpi-tile c3">
+      <div class="kpi-label">Pernikahan Baru</div>
+      <div class="kpi-val" id="kpi-baru">8.742</div>
+      <div class="kpi-delta"><span class="dn">↓ 0,9%</span> vs tahun lalu</div>
+      <div class="kpi-spark"><canvas id="spk-baru" width="100" height="28"></canvas></div>
+    </div>
+    <div class="kpi-tile c4">
+      <div class="kpi-label">Rasio Menikah</div>
+      <div class="kpi-val" id="kpi-rasio">49,2%</div>
+      <div class="kpi-delta">dari total penduduk</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: Tren Tahun + Per Kecamatan -->
+  <div class="chart-grid-3">
+    <div class="chart-card">
+      <div class="card-title">Jumlah Pernikahan per Kecamatan</div>
+      <div class="card-sub">Total penduduk berstatus menikah · 2024</div>
+      <div class="chart-wrap">
+        <svg id="bar-kec" viewBox="0 0 580 320" aria-label="Bar chart jumlah menikah per kecamatan"></svg>
+      </div>
+      <div class="table-section">
+        <button class="table-toggle" onclick="toggleTable('tbl-kec',this)">Tampilkan tabel data</button>
+        <div id="tbl-kec" class="data-table">
+          <table>
+            <thead><tr><th>Kecamatan</th><th>Laki-laki</th><th>Perempuan</th><th>Total</th></tr></thead>
+            <tbody id="tbl-kec-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="card-title">Tren Pernikahan 2019–2024</div>
+      <div class="card-sub">Total pasangan baru terdaftar per tahun</div>
+      <div class="chart-wrap">
+        <svg id="line-tren" viewBox="0 0 280 200" aria-label="Tren pernikahan 2019-2024"></svg>
+      </div>
+      <div class="legend" id="legend-tren"></div>
+      <div class="table-section">
+        <button class="table-toggle" onclick="toggleTable('tbl-tren',this)">Tampilkan tabel data</button>
+        <div id="tbl-tren" class="data-table">
+          <table>
+            <thead><tr><th>Tahun</th><th>Nikah Baru</th><th>Cerai</th><th>Net</th></tr></thead>
+            <tbody id="tbl-tren-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Distribusi Usia + Status Lengkap -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="card-title">Distribusi Usia Saat Menikah</div>
+      <div class="card-sub">Persentase pasangan baru per kelompok usia · 2024</div>
+      <div class="chart-wrap">
+        <svg id="bar-usia" viewBox="0 0 340 200" aria-label="Distribusi usia menikah"></svg>
+      </div>
+      <div class="legend" id="legend-usia"></div>
+      <div class="table-section">
+        <button class="table-toggle" onclick="toggleTable('tbl-usia',this)">Tampilkan tabel data</button>
+        <div id="tbl-usia" class="data-table">
+          <table>
+            <thead><tr><th>Usia</th><th>Laki-laki</th><th>Perempuan</th></tr></thead>
+            <tbody id="tbl-usia-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="card-title">Status Perkawinan Penduduk</div>
+      <div class="card-sub">Distribusi seluruh penduduk Sleman</div>
+      <div class="seg-bar-wrap" id="seg-status-wrap"></div>
+      <div style="margin-top:16px;">
+        <svg id="bar-status" viewBox="0 0 300 160" aria-label="Bar status perkawinan"></svg>
+      </div>
+      <div class="table-section">
+        <button class="table-toggle" onclick="toggleTable('tbl-status',this)">Tampilkan tabel data</button>
+        <div id="tbl-status" class="data-table">
+          <table>
+            <thead><tr><th>Status</th><th>Jumlah</th><th>%</th></tr></thead>
+            <tbody id="tbl-status-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-body -->
+
+<div class="tooltip" id="tt"></div>
+
+<script>
+'use strict';
+
+// ========== DATA ==========
+const kecamatanData = [
+  { nama:'Depok',       lk:42500, pr:42800 },
+  { nama:'Mlati',       lk:28700, pr:28900 },
+  { nama:'Gamping',     lk:27400, pr:27600 },
+  { nama:'Ngaglik',     lk:26100, pr:26300 },
+  { nama:'Godean',      lk:22800, pr:22900 },
+  { nama:'Kalasan',     lk:21500, pr:21600 },
+  { nama:'Berbah',      lk:18200, pr:18400 },
+  { nama:'Sleman',      lk:17600, pr:17800 },
+  { nama:'Ngemplak',    lk:16800, pr:16900 },
+  { nama:'Tempel',      lk:15400, pr:15600 },
+  { nama:'Prambanan',   lk:14900, pr:15100 },
+  { nama:'Seyegan',     lk:13700, pr:13900 },
+  { nama:'Turi',        lk:12200, pr:12400 },
+  { nama:'Pakem',       lk:11800, pr:12000 },
+  { nama:'Cangkringan', lk:10600, pr:10700 },
+  { nama:'Moyudan',     lk:10200, pr:10300 },
+  { nama:'Minggir',     lk: 9300, pr: 9500 },
+];
+
+const trenData = [
+  { tahun:2019, nikah:9820, cerai:1540 },
+  { tahun:2020, nikah:7240, cerai:1310 },
+  { tahun:2021, nikah:8110, cerai:1480 },
+  { tahun:2022, nikah:8890, cerai:1620 },
+  { tahun:2023, nikah:8822, cerai:1690 },
+  { tahun:2024, nikah:8742, cerai:1715 },
+];
+
+const usiaData = [
+  { usia:'<20 th', lk:3.2,  pr:8.6  },
+  { usia:'20–24', lk:18.4, pr:29.1 },
+  { usia:'25–29', lk:32.7, pr:31.4 },
+  { usia:'30–34', lk:24.1, pr:18.2 },
+  { usia:'35–39', lk:12.3, pr: 8.0 },
+  { usia:'40+',   lk: 9.3, pr: 4.7 },
+];
+
+const statusData = [
+  { status:'Menikah',   jml:594320, color:'var(--accent)' },
+  { status:'Belum Nikah', jml:477580, color:'var(--accent-2)' },
+  { status:'Cerai Hidup', jml: 28460, color:'var(--accent-3)' },
+  { status:'Cerai Mati',  jml: 28840, color:'var(--accent-4)' },
+];
+const totalPenduduk = statusData.reduce((s,d)=>s+d.jml,0);
+
+// ========== COLORS ==========
+const C1 = '#2a78d6', C2 = '#eb6834', C3 = '#1baf7a', C4 = '#eda100';
+const isDark = () => {
+  const t = document.documentElement.getAttribute('data-theme');
+  if(t==='dark') return true;
+  if(t==='light') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+};
+const surfClr = ()=> isDark() ? '#161820' : '#ffffff';
+const ink2 = ()=> isDark() ? '#9aa0b5' : '#4a5162';
+const gridClr = ()=> isDark() ? '#22253a' : '#e8eaed';
+const inkM = ()=> isDark() ? '#5c6278' : '#8892a4';
+
+// ========== TOOLTIP ==========
+const tt = document.getElementById('tt');
+function showTT(html, e) {
+  tt.innerHTML = html;
+  tt.classList.add('visible');
+  moveTT(e);
+}
+function moveTT(e) {
+  const pad=12, W=tt.offsetWidth||200, H=tt.offsetHeight||80;
+  let x=e.clientX+pad, y=e.clientY-H/2;
+  if(x+W>window.innerWidth-8) x=e.clientX-W-pad;
+  if(y<8) y=8;
+  if(y+H>window.innerHeight-8) y=window.innerHeight-H-8;
+  tt.style.left=x+'px'; tt.style.top=y+'px';
+}
+function hideTT() { tt.classList.remove('visible'); }
+document.addEventListener('mousemove', e=>{ if(tt.classList.contains('visible')) moveTT(e); });
+
+// ========== UTILS ==========
+function fmt(n){ if(n>=1e6) return (n/1e6).toFixed(1)+'jt'; if(n>=1e3) return n.toLocaleString('id-ID'); return n+''; }
+function fmtFull(n){ return n.toLocaleString('id-ID'); }
+function svgEl(tag,attrs={}){
+  const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const[k,v] of Object.entries(attrs)) el.setAttribute(k,v);
+  return el;
+}
+function clearSVG(el){ while(el.firstChild) el.removeChild(el.firstChild); }
+
+// ========== SPARKLINE ==========
+function sparkline(canvasId, data, color){
+  const c=document.getElementById(canvasId);
+  if(!c) return;
+  const ctx=c.getContext('2d');
+  const W=c.offsetWidth||100, H=28;
+  c.width=W*2; c.height=H*2; ctx.scale(2,2);
+  ctx.clearRect(0,0,W,H);
+  const mn=Math.min(...data), mx=Math.max(...data), rng=mx-mn||1;
+  const pts=data.map((v,i)=>({ x: i/(data.length-1)*(W-4)+2, y: H-4 - (v-mn)/rng*(H-8) }));
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.lineJoin='round';
+  ctx.stroke();
+  // end dot
+  const last=pts[pts.length-1];
+  ctx.beginPath(); ctx.arc(last.x,last.y,3,0,Math.PI*2);
+  ctx.fillStyle=color; ctx.fill();
+}
+
+// ========== BAR CHART: KECAMATAN ==========
+function drawBarKec(){
+  const svg=document.getElementById('bar-kec');
+  clearSVG(svg);
+  const sorted=[...kecamatanData].sort((a,b)=>(b.lk+b.pr)-(a.lk+a.pr));
+  const VW=580, VH=320;
+  const mt=10, mb=30, ml=90, mr=20;
+  const W=VW-ml-mr, H=VH-mt-mb;
+  const n=sorted.length;
+  const barH=Math.min(14, (H/n)-3);
+  const step=H/n;
+  const maxVal=Math.max(...sorted.map(d=>d.lk+d.pr));
+  const scX=v=>v/maxVal*W;
+  const surf=surfClr();
+
+  // grid
+  [0,0.25,0.5,0.75,1].forEach(t=>{
+    const x=ml+t*W;
+    const line=svgEl('line',{x1:x,y1:mt,x2:x,y2:mt+H,stroke:gridClr(),'stroke-width':1});
+    svg.appendChild(line);
+    if(t>0){
+      const val=Math.round(t*maxVal);
+      const lbl=svgEl('text',{x,y:mt+H+14,'text-anchor':'middle','font-size':'9','fill':inkM(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+      lbl.textContent=fmt(val);
+      svg.appendChild(lbl);
+    }
+  });
+
+  sorted.forEach((d,i)=>{
+    const y=mt+i*step+(step-barH*2-2)/2;
+    const tot=d.lk+d.pr;
+
+    // lk bar
+    const wLk=scX(d.lk);
+    const rLk=svgEl('rect',{x:ml,y,width:Math.max(wLk,1),height:barH,fill:C1,rx:2});
+    // pr bar stacked
+    const wPr=scX(d.pr);
+    const rPr=svgEl('rect',{x:ml+wLk+2,y,width:Math.max(wPr,1),height:barH,fill:C2,rx:2});
+    // total bar (combined, lower)
+    const y2=y+barH+2;
+    const rTot=svgEl('rect',{x:ml,y:y2,width:Math.max(scX(tot),1),height:barH,fill:C1,rx:2,'opacity':'0.2'});
+
+    // labels
+    const lbl=svgEl('text',{x:ml-6,y:y+barH-2,'text-anchor':'end','font-size':'10','fill':ink2(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    lbl.textContent=d.nama;
+    svg.appendChild(rTot); svg.appendChild(rLk); svg.appendChild(rPr); svg.appendChild(lbl);
+
+    // total label
+    const tLbl=svgEl('text',{x:ml+scX(tot)+5,y:y+barH-2,'font-size':'9','fill':ink2(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    tLbl.textContent=fmt(tot);
+    svg.appendChild(tLbl);
+
+    // hover group
+    const hRect=svgEl('rect',{x:ml,y:y-1,width:scX(tot)+40,height:step-1,fill:'transparent',cursor:'pointer','data-i':i});
+    hRect.addEventListener('mouseenter',e=>{
+      showTT(`<div class="tt-title">${d.nama}</div>
+        <div class="tt-row"><span class="tt-label">Laki-laki</span><span class="tt-val">${fmtFull(d.lk)}</span></div>
+        <div class="tt-row"><span class="tt-label">Perempuan</span><span class="tt-val">${fmtFull(d.pr)}</span></div>
+        <div class="tt-row"><span class="tt-label">Total</span><span class="tt-val">${fmtFull(d.lk+d.pr)}</span></div>`,e);
+    });
+    hRect.addEventListener('mouseleave',hideTT);
+    svg.appendChild(hRect);
+  });
+
+  // legend
+  const leg=document.createElement('div'); leg.className='legend';
+  [['Laki-laki',C1],['Perempuan',C2]].forEach(([l,c])=>{
+    const it=document.createElement('div'); it.className='legend-item';
+    const dot=document.createElement('div'); dot.className='legend-dot'; dot.style.background=c;
+    const span=document.createElement('span'); span.textContent=l;
+    it.appendChild(dot); it.appendChild(span); leg.appendChild(it);
+  });
+  // insert after svg wrap
+  const wrap=svg.parentElement;
+  const existing=wrap.parentElement.querySelector('.legend');
+  if(existing) existing.remove();
+  wrap.insertAdjacentElement('afterend',leg);
+
+  // fill table
+  const tb=document.getElementById('tbl-kec-body'); tb.innerHTML='';
+  sorted.forEach(d=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${d.nama}</td><td>${fmtFull(d.lk)}</td><td>${fmtFull(d.pr)}</td><td><strong>${fmtFull(d.lk+d.pr)}</strong></td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ========== LINE CHART: TREN ==========
+function drawLineTren(){
+  const svg=document.getElementById('line-tren');
+  clearSVG(svg);
+  const VW=280,VH=200,mt=16,mb=30,ml=40,mr=16;
+  const W=VW-ml-mr, H=VH-mt-mb;
+  const yrs=trenData.map(d=>d.tahun);
+  const maxVal=Math.max(...trenData.map(d=>d.nikah));
+  const minVal=0;
+  const rng=maxVal-minVal;
+  const scX=i=>ml+i/(yrs.length-1)*W;
+  const scY=v=>mt+H-(v-minVal)/rng*H;
+  const surf=surfClr();
+
+  // grid
+  [0,2500,5000,7500,10000].forEach(v=>{
+    if(v>maxVal) return;
+    const y=scY(v);
+    svg.appendChild(svgEl('line',{x1:ml,y1:y,x2:ml+W,y2:y,stroke:gridClr(),'stroke-width':1}));
+    const t=svgEl('text',{x:ml-4,y:y+3,'text-anchor':'end','font-size':'8','fill':inkM(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    t.textContent=v===0?'0':v/1000+'K';
+    svg.appendChild(t);
+  });
+
+  // x labels
+  trenData.forEach((d,i)=>{
+    const t=svgEl('text',{x:scX(i),y:mt+H+16,'text-anchor':'middle','font-size':'9','fill':inkM(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    t.textContent=d.tahun;
+    svg.appendChild(t);
+  });
+
+  // area nikah
+  const areaPts=trenData.map((d,i)=>({x:scX(i),y:scY(d.nikah)}));
+  const aPath='M'+areaPts.map(p=>`${p.x},${p.y}`).join('L')+`L${areaPts[areaPts.length-1].x},${scY(0)}L${areaPts[0].x},${scY(0)}Z`;
+  svg.appendChild(svgEl('path',{d:aPath,fill:C1,opacity:'0.1','fill-rule':'nonzero'}));
+
+  // line nikah
+  const lPath='M'+areaPts.map(p=>`${p.x},${p.y}`).join('L');
+  svg.appendChild(svgEl('path',{d:lPath,fill:'none',stroke:C1,'stroke-width':'2','stroke-linejoin':'round','stroke-linecap':'round'}));
+
+  // cerai line
+  const ceraiPts=trenData.map((d,i)=>({x:scX(i),y:scY(d.cerai)}));
+  const cPath='M'+ceraiPts.map(p=>`${p.x},${p.y}`).join('L');
+  svg.appendChild(svgEl('path',{d:cPath,fill:'none',stroke:C2,'stroke-width':'2','stroke-linejoin':'round','stroke-linecap':'round'}));
+
+  // dots + hover
+  trenData.forEach((d,i)=>{
+    [['nikah',C1,areaPts[i]],['cerai',C2,ceraiPts[i]]].forEach(([key,clr,pt])=>{
+      const ring=svgEl('circle',{cx:pt.x,cy:pt.y,r:5,fill:surf,stroke:clr,'stroke-width':1.5});
+      svg.appendChild(ring);
+    });
+    const hRect=svgEl('rect',{x:scX(i)-14,y:mt,width:28,height:H+8,fill:'transparent',cursor:'pointer'});
+    hRect.addEventListener('mouseenter',e=>{
+      showTT(`<div class="tt-title">${d.tahun}</div>
+        <div class="tt-row"><span class="tt-label">Nikah baru</span><span class="tt-val">${fmtFull(d.nikah)}</span></div>
+        <div class="tt-row"><span class="tt-label">Perceraian</span><span class="tt-val">${fmtFull(d.cerai)}</span></div>`,e);
+    });
+    hRect.addEventListener('mouseleave',hideTT);
+    svg.appendChild(hRect);
+  });
+
+  // legend
+  const leg=document.getElementById('legend-tren'); leg.innerHTML='';
+  [['Nikah Baru',C1,'line'],['Perceraian',C2,'line']].forEach(([l,c,t])=>{
+    const it=document.createElement('div'); it.className='legend-item';
+    const mk=document.createElement('div'); mk.className='legend-line'; mk.style.background=c;
+    const sp=document.createElement('span'); sp.textContent=l;
+    it.appendChild(mk); it.appendChild(sp); leg.appendChild(it);
+  });
+
+  // table
+  const tb=document.getElementById('tbl-tren-body'); tb.innerHTML='';
+  trenData.forEach(d=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${d.tahun}</td><td>${fmtFull(d.nikah)}</td><td>${fmtFull(d.cerai)}</td><td>${fmtFull(d.nikah-d.cerai)}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ========== BAR: USIA (GROUPED) ==========
+function drawBarUsia(){
+  const svg=document.getElementById('bar-usia');
+  clearSVG(svg);
+  const VW=340,VH=200,mt=10,mb=40,ml=38,mr=10;
+  const W=VW-ml-mr, H=VH-mt-mb;
+  const n=usiaData.length;
+  const groupW=W/n;
+  const barW=Math.min(14,(groupW-8)/2);
+  const maxVal=Math.max(...usiaData.map(d=>Math.max(d.lk,d.pr)));
+
+  [0,10,20,30].forEach(v=>{
+    if(v>maxVal) return;
+    const y=mt+H-v/maxVal*H;
+    svg.appendChild(svgEl('line',{x1:ml,y1:y,x2:ml+W,y2:y,stroke:gridClr(),'stroke-width':1}));
+    const t=svgEl('text',{x:ml-4,y:y+3,'text-anchor':'end','font-size':'8','fill':inkM(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    t.textContent=v+'%'; svg.appendChild(t);
+  });
+
+  usiaData.forEach((d,i)=>{
+    const cx=ml+i*groupW+groupW/2;
+    const hLk=d.lk/maxVal*H, hPr=d.pr/maxVal*H;
+    const x1=cx-barW-1, x2=cx+1;
+    const rLk=svgEl('rect',{x:x1,y:mt+H-hLk,width:barW,height:hLk,fill:C1,rx:'2 2 0 0'});
+    const rPr=svgEl('rect',{x:x2,y:mt+H-hPr,width:barW,height:hPr,fill:C2,rx:'2 2 0 0'});
+    svg.appendChild(rLk); svg.appendChild(rPr);
+
+    const xt=svgEl('text',{x:cx,y:mt+H+14,'text-anchor':'middle','font-size':'9','fill':inkM(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    xt.textContent=d.usia; svg.appendChild(xt);
+
+    const hRect=svgEl('rect',{x:cx-groupW/2,y:mt,width:groupW,height:H+4,fill:'transparent',cursor:'pointer'});
+    hRect.addEventListener('mouseenter',e=>{
+      showTT(`<div class="tt-title">Usia ${d.usia}</div>
+        <div class="tt-row"><span class="tt-label">Laki-laki</span><span class="tt-val">${d.lk}%</span></div>
+        <div class="tt-row"><span class="tt-label">Perempuan</span><span class="tt-val">${d.pr}%</span></div>`,e);
+    });
+    hRect.addEventListener('mouseleave',hideTT);
+    svg.appendChild(hRect);
+  });
+
+  // legend
+  const leg=document.getElementById('legend-usia'); leg.innerHTML='';
+  [['Laki-laki',C1],['Perempuan',C2]].forEach(([l,c])=>{
+    const it=document.createElement('div'); it.className='legend-item';
+    const dot=document.createElement('div'); dot.className='legend-dot'; dot.style.background=c;
+    const sp=document.createElement('span'); sp.textContent=l;
+    it.appendChild(dot); it.appendChild(sp); leg.appendChild(it);
+  });
+
+  // table
+  const tb=document.getElementById('tbl-usia-body'); tb.innerHTML='';
+  usiaData.forEach(d=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${d.usia}</td><td>${d.lk}%</td><td>${d.pr}%</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ========== STATUS BAR + BAR CHART ==========
+function drawStatus(){
+  const total=statusData.reduce((s,d)=>s+d.jml,0);
+  const colors=[C1,C2,C3,C4];
+
+  // Segmented bar
+  const wrap=document.getElementById('seg-status-wrap'); wrap.innerHTML='';
+  const bar=document.createElement('div'); bar.className='seg-bar';
+  statusData.forEach((d,i)=>{
+    const pct=d.jml/total*100;
+    const seg=document.createElement('div'); seg.className='seg';
+    seg.style.width=pct+'%'; seg.style.background=colors[i];
+    seg.style.minWidth=pct<5?'0':'0';
+    if(pct>8){ const sp=document.createElement('span'); sp.textContent=pct.toFixed(1)+'%'; seg.appendChild(sp); }
+    seg.addEventListener('mouseenter',e=>{
+      showTT(`<div class="tt-title">${d.status}</div>
+        <div class="tt-row"><span class="tt-label">Jumlah</span><span class="tt-val">${fmtFull(d.jml)}</span></div>
+        <div class="tt-row"><span class="tt-label">Persentase</span><span class="tt-val">${(d.jml/total*100).toFixed(1)}%</span></div>`,e);
+    });
+    seg.addEventListener('mouseleave',hideTT);
+    bar.appendChild(seg);
+  });
+  wrap.appendChild(bar);
+
+  // legend for seg bar
+  const leg=document.createElement('div'); leg.className='legend'; leg.style.marginTop='10px';
+  statusData.forEach((d,i)=>{
+    const it=document.createElement('div'); it.className='legend-item';
+    const dot=document.createElement('div'); dot.className='legend-dot'; dot.style.background=colors[i];
+    const sp=document.createElement('span'); sp.textContent=d.status;
+    it.appendChild(dot); it.appendChild(sp); leg.appendChild(it);
+  });
+  wrap.appendChild(leg);
+
+  // Horizontal bar chart below
+  const svg=document.getElementById('bar-status'); clearSVG(svg);
+  const VW=300,VH=160,mt=8,mb=8,ml=82,mr=50;
+  const W=VW-ml-mr, H=VH-mt-mb;
+  const step=H/statusData.length;
+  const barH=Math.min(18,step-10);
+  const maxJml=Math.max(...statusData.map(d=>d.jml));
+
+  statusData.forEach((d,i)=>{
+    const y=mt+i*step+(step-barH)/2;
+    const w=d.jml/maxJml*W;
+    const rect=svgEl('rect',{x:ml,y,width:Math.max(w,2),height:barH,fill:colors[i],rx:2});
+    svg.appendChild(rect);
+
+    const lbl=svgEl('text',{x:ml-6,y:y+barH/2+4,'text-anchor':'end','font-size':'10','fill':ink2(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    lbl.textContent=d.status; svg.appendChild(lbl);
+
+    const vlbl=svgEl('text',{x:ml+w+6,y:y+barH/2+4,'font-size':'10','fill':ink2(),'font-family':'Plus Jakarta Sans,system-ui,sans-serif'});
+    vlbl.textContent=fmt(d.jml); svg.appendChild(vlbl);
+
+    const hRect=svgEl('rect',{x:0,y:y-2,width:VW,height:step,fill:'transparent',cursor:'pointer'});
+    hRect.addEventListener('mouseenter',e=>{
+      showTT(`<div class="tt-title">${d.status}</div>
+        <div class="tt-row"><span class="tt-label">Jumlah</span><span class="tt-val">${fmtFull(d.jml)}</span></div>
+        <div class="tt-row"><span class="tt-label">Share</span><span class="tt-val">${(d.jml/total*100).toFixed(1)}%</span></div>`,e);
+    });
+    hRect.addEventListener('mouseleave',hideTT);
+    svg.appendChild(hRect);
+  });
+
+  // table
+  const tb=document.getElementById('tbl-status-body'); tb.innerHTML='';
+  statusData.forEach((d,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${d.status}</td><td>${fmtFull(d.jml)}</td><td>${(d.jml/total*100).toFixed(1)}%</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ========== SPARKLINES ==========
+function drawSparks(){
+  const nikahTren=trenData.map(d=>d.nikah);
+  const ceraiTren=trenData.map(d=>d.cerai);
+  sparkline('spk-lk',  [268000,274000,280000,284000,291000,297160], C1);
+  sparkline('spk-pr',  [267000,273000,279000,283000,292000,297160], C2);
+  sparkline('spk-baru', nikahTren, C3);
+}
+
+// ========== TABLE TOGGLE ==========
+function toggleTable(id,btn){
+  const el=document.getElementById(id);
+  const open=el.classList.toggle('open');
+  btn.textContent=open?'Sembunyikan tabel':'Tampilkan tabel data';
+}
+
+// ========== FILTER HANDLERS ==========
+let curTahun=2024, curKec='semua';
+function setTahun(t,btn){
+  curTahun=t;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+function setKec(k){ curKec=k; renderAll(); }
+
+function renderAll(){
+  drawBarKec();
+  drawLineTren();
+  drawBarUsia();
+  drawStatus();
+  drawSparks();
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderAll();
+  // redraw on theme change
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderAll);
+});
+</script>
